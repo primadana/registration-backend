@@ -55,7 +55,12 @@ $config = [
         ],
         
     ],
-    'params' => $params,
+    // 'params' => $params,
+    // 'response' => [
+    //     'format' => yii\web\Response::FORMAT_JSON,
+    //     'charset' => 'UTF-8',
+    //     // ...
+    // ]
 ];
 
 if (YII_ENV_DEV) {

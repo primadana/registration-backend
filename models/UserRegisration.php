@@ -32,14 +32,12 @@ class UserRegisration extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'email', 'first_name', 'last_name', 'full_name'], 'required'],
-            [['id'], 'integer'],
+            [['email', 'first_name', 'last_name', 'full_name'], 'required'],
             [['date_of_birth'], 'safe'],
             [['email', 'first_name', 'last_name', 'full_name'], 'string', 'max' => 255],
             [['gender'], 'string', 'max' => 15],
             [['phone_number'], 'string', 'max' => 20],
             [['email'], 'unique'],
-            [['id'], 'unique'],
         ];
     }
 

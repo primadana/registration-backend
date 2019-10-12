@@ -45,23 +45,44 @@ class RegistrationController extends \yii\web\Controller
     }
     
     public function actionSaveRegistration(){
-        //$params = json_decode(file_get_contents('php://input'), true);
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $params = json_decode(Yii::$app->request->getRawBody(), true);
-        // var_dump($params['data']['email']); die();
-        // return json_decode($params, true);
-        $user = new UserRegisration;
-        $user->email = $params['data']['email'];
-        $user->first_name = $params['data']['first_name'];
-        $user->last_name = $params['data']['last_name'];
-        $user->full_name = $user->first_name.' '.$user->last_name;
-        $user->date_of_birth = $params['data']['date'].'-'.$params['data']['month'].'-'.$params['data']['year'];
-        $user->gender = $params['data']['gender'];
-        $user->phone_number = $params['data']['phone_number'];
-        if($user->save()){
-            return 'true';
+
+        $cek_email = UserRegisration::find()->where(['email' => $params['data']['email']])->one();
+        $cek_phone = UserRegisration::find()->where(['email' => $params['data']['phone_number']])->one();
+        if($cek_email){
+            $response = [
+                'status' => 'Email already exist',
+            ];
+            return $response;
+        }
+        else if($cek_phone){
+            $response = [
+                'status' => 'Phone number already exist',
+            ];
+            return $response;
         }
         else{
-            var_dump($user->errors);die;
+            $user = new UserRegisration;
+            $user->email = $params['data']['email'];
+            $user->first_name = $params['data']['first_name'];
+            $user->last_name = $params['data']['last_name'];
+            $user->full_name = $user->first_name.' '.$user->last_name;
+            $user->date_of_birth = $params['data']['year'].'-'.$params['data']['month'].'-'.$params['data']['date'];
+            $user->gender = $params['data']['gender'];
+            $user->phone_number = $params['data']['phone_number'];
+            if($user->save()){
+                $response = [
+                    'status' => 'Data Successfull Saved',
+                ];
+                return $response;
+            }
+            else{
+                $response = [
+                    'status' => 'Failed Save Data.',
+                ];
+                return $response;
+            }
         }
     }
 
