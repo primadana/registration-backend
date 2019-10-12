@@ -49,16 +49,17 @@ class RegistrationController extends \yii\web\Controller
         $params = json_decode(Yii::$app->request->getRawBody(), true);
 
         $cek_email = UserRegisration::find()->where(['email' => $params['data']['email']])->one();
-        $cek_phone = UserRegisration::find()->where(['email' => $params['data']['phone_number']])->one();
-        if($cek_email){
+        $cek_phone = UserRegisration::find()->where(['phone_number' => $params['data']['phone_number']])->one();
+        
+        if($cek_phone){
             $response = [
-                'status' => 'Email already exist',
+                'status' => 'Phone number already exist',
             ];
             return $response;
         }
-        else if($cek_phone){
+        else if($cek_email){
             $response = [
-                'status' => 'Phone number already exist',
+                'status' => 'Email already exist',
             ];
             return $response;
         }
